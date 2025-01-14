@@ -220,9 +220,7 @@ function step!(integrator::SimpleIntegrator2Nstar)
 
     @trixi_timeit timer() "SSP Low-Storage Runge-Kutta step" begin
         # q2 = q1
-        @threaded for i in eachindex(integrator.u)
-            integrator.u_tmp[i] = integrator.u[i]
-        end
+        integrator.u_tmp .= integrator.u
 
         t_stage = integrator.t
         integrator.f(integrator.du_tmp, integrator.u, prob.p, t_stage) # f(q2) = f(q1)
