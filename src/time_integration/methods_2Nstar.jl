@@ -2,11 +2,35 @@
 # Since these FMAs can increase the performance of many numerical algorithms,
 # we need to opt-in explicitly.
 # See https://ranocha.de/blog/Optimizing_EC_Trixi for further details.
+using JSON
+
 @muladd begin
 #! format: noindent
 
 # Abstract base type for time integration schemes of storage class `2N*`
 abstract type SimpleAlgorithm2Nstar end
+
+"""
+Low Storage 2N* SSP s-stage explicit Runge Kutta method of order 4 
+with only two storage registers
+"""
+struct SSPs4_2Nstar <: SimpleAlgorithm2Nstar
+    NumStages::Int
+    lambda::SVector
+    gamma::SVector
+    c::SVector
+
+    function SSPs4_2Nstar(NumStages::Int)
+
+        data = JSON.parsefile("src/time_integration/SSP_2Nstar_methods.json")
+
+        lambda = SVector{2*NumStages-1, Float64}(data[string(NumStages)]["Lambda"])
+        gamma = SVector{2*NumStages-1, Float64}(data[string(NumStages)]["Gamma"])
+        c = SVector{NumStages, Float64}(data[string(NumStages)]["c"])
+
+        new(NumStages, lambda, gamma, c)
+    end
+end
 
 """
 Low Storage 2N* SSP 10-stage explicit Runge Kutta method of order 4 
