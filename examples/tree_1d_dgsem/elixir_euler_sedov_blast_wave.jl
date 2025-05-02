@@ -3,7 +3,6 @@ using Trixi
 
 ###############################################################################
 # semidiscretization of the compressible Euler equations
-
 equations = CompressibleEulerEquations1D(1.4)
 
 """
@@ -89,7 +88,7 @@ amr_callback = AMRCallback(semi, amr_controller,
                            adapt_initial_condition = true,
                            adapt_initial_condition_only_refine = true)
 
-stepsize_callback = StepsizeCallback(cfl = 0.5)
+stepsize_callback = StepsizeCallback(cfl = 3.6)
 
 callbacks = CallbackSet(summary_callback,
                         analysis_callback, alive_callback,
@@ -99,6 +98,10 @@ callbacks = CallbackSet(summary_callback,
 ###############################################################################
 # run the simulation
 
-sol = solve(ode, CarpenterKennedy2N54(williamson_condition = false);
+sol = solve(ode, SSPRK54();
             dt = stepsize_callback(ode), # solve needs some value here but it will be overwritten by the stepsize_callback
-            ode_default_options()..., callback = callbacks);
+            ode_default_options()..., callback=callbacks);
+
+# println(analysis_callback(sol))
+# using Plots
+# plot(sol)

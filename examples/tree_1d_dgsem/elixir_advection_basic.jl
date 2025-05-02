@@ -40,7 +40,7 @@ save_solution = SaveSolutionCallback(interval = 100,
                                      solution_variables = cons2prim)
 
 # The StepsizeCallback handles the re-calculation of the maximum Δt after each time step
-stepsize_callback = StepsizeCallback(cfl = 2)
+stepsize_callback = StepsizeCallback(cfl = 1.5)
 
 # Create a CallbackSet to collect all callbacks such that they can be passed to the ODE solver
 callbacks = CallbackSet(summary_callback, analysis_callback, save_solution,
@@ -50,6 +50,10 @@ callbacks = CallbackSet(summary_callback, analysis_callback, save_solution,
 # run the simulation
 
 # OrdinaryDiffEq's `solve` method evolves the solution in time and executes the passed callbacks
-sol = Trixi.solve(ode, CarpenterKennedy2N54(williamson_condition = false),
+sol = Trixi.solve(ode, Trixi.SSPs4_2Nstar(10);
             dt = 1.0, # solve needs some value here but it will be overwritten by the stepsize_callback
             ode_default_options()..., callback = callbacks);
+
+# Plots
+using Plots
+plot(sol)
