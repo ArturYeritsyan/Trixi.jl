@@ -8,7 +8,7 @@ advection_velocity = 1.0
 equations = LinearScalarAdvectionEquation1D(advection_velocity)
 
 # Create DG solver with polynomial degree = 3 and (local) Lax-Friedrichs/Rusanov flux as surface flux
-solver = DGSEM(polydeg = 3, surface_flux = flux_lax_friedrichs)
+solver = DGSEM(polydeg = 2, surface_flux = flux_lax_friedrichs)
 
 coordinates_min = -1.0 # minimum coordinate
 coordinates_max = 1.0 # maximum coordinate
@@ -40,7 +40,7 @@ save_solution = SaveSolutionCallback(interval = 100,
                                      solution_variables = cons2prim)
 
 # The StepsizeCallback handles the re-calculation of the maximum Δt after each time step
-stepsize_callback = StepsizeCallback(cfl = 1.5)
+stepsize_callback = StepsizeCallback(cfl = 0.5)
 
 # Create a CallbackSet to collect all callbacks such that they can be passed to the ODE solver
 callbacks = CallbackSet(summary_callback, analysis_callback, save_solution,
@@ -50,10 +50,12 @@ callbacks = CallbackSet(summary_callback, analysis_callback, save_solution,
 # run the simulation
 
 # OrdinaryDiffEq's `solve` method evolves the solution in time and executes the passed callbacks
-sol = Trixi.solve(ode, Trixi.SSPs4_2Nstar(10);
+sol = solve(ode, SSPRK22();
             dt = 1.0, # solve needs some value here but it will be overwritten by the stepsize_callback
             ode_default_options()..., callback = callbacks);
 
+println(analysis_callback(sol))
+           
 # Plots
-using Plots
-plot(sol)
+# using Plots
+# plot(sol)

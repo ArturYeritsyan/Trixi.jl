@@ -98,7 +98,7 @@ amr_callback = AMRCallback(semi, amr_controller,
                            adapt_initial_condition = true,
                            adapt_initial_condition_only_refine = true)
 
-cfl = cfl_number
+cfl = 2.1
 stepsize_callback = StepsizeCallback(cfl = cfl)
 
 glm_speed_callback = GlmSpeedCallback(glm_scale = 0.5, cfl = cfl)
@@ -106,7 +106,7 @@ glm_speed_callback = GlmSpeedCallback(glm_scale = 0.5, cfl = cfl)
 callbacks = CallbackSet(summary_callback,
                         analysis_callback,
                         alive_callback,
-                        save_solution,
+                        # save_solution,
                         amr_callback,
                         stepsize_callback,
                         glm_speed_callback)
@@ -114,10 +114,11 @@ callbacks = CallbackSet(summary_callback,
 ###############################################################################
 # run the simulation
 
-sol = Trixi.solve(ode, Trixi.SSPs4_2Nstar(15);
+sol = Trixi.solve(ode, Trixi.SSP154_2Nstar();
+# sol = solve(ode, SSPRK104();
             dt = 1.0, # solve needs some value here but it will be overwritten by the stepsize_callback
             ode_default_options()..., callback=callbacks);
 
-# println(analysis_callback(sol))
+println(analysis_callback(sol))
 # using Plots
 # plot(sol)

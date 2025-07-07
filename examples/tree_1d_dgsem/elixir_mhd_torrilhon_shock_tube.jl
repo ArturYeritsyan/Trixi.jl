@@ -65,8 +65,9 @@ summary_callback = SummaryCallback()
 
 analysis_interval = 100
 analysis_callback = AnalysisCallback(semi, interval = analysis_interval,
-                                     extra_analysis_errors = (:l2_error_primitive,
-                                                              :linf_error_primitive))
+                                     analysis_errors = Symbol[],
+                                     analysis_integrals = ()
+                                     )
 
 alive_callback = AliveCallback(analysis_interval = analysis_interval)
 
@@ -75,16 +76,16 @@ save_solution = SaveSolutionCallback(interval = 100,
                                      save_final_solution = true,
                                      solution_variables = cons2prim)
 
-stepsize_callback = StepsizeCallback(cfl = 3.6)
+stepsize_callback = StepsizeCallback(cfl = 3.6/2)
 
 callbacks = CallbackSet(summary_callback,
                         analysis_callback, alive_callback,
-                        save_solution,
+                        #save_solution,
                         stepsize_callback)
 
 ###############################################################################
 # run the simulation
-# sol = Trixi.solve(ode, Trixi.SSPs4_2Nstar(10);
+# sol = Trixi.solve(ode, Trixi.SSP104_2Nstar();
 sol = solve(ode, SSPRK104();
             dt = 1.0, # solve needs some value here but it will be overwritten by the stepsize_callback
             ode_default_options()..., callback=callbacks);

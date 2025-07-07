@@ -37,7 +37,7 @@ initial_condition = initial_condition_sedov_blast_wave
 
 surface_flux = flux_lax_friedrichs
 volume_flux = flux_chandrashekar
-basis = LobattoLegendreBasis(3)
+basis = LobattoLegendreBasis(5)
 shock_indicator_variable = density_pressure
 indicator_sc = IndicatorHennemannGassner(equations, basis,
                                          alpha_max = 0.5,
@@ -66,7 +66,9 @@ ode = semidiscretize(semi, tspan)
 summary_callback = SummaryCallback()
 
 analysis_interval = 1000
-analysis_callback = AnalysisCallback(semi, interval = analysis_interval)
+analysis_callback = AnalysisCallback(semi, interval = analysis_interval,
+                                     analysis_errors = Symbol[],
+                                     analysis_integrals = ())
 
 alive_callback = AliveCallback(analysis_interval = analysis_interval)
 
@@ -88,20 +90,21 @@ amr_callback = AMRCallback(semi, amr_controller,
                            adapt_initial_condition = true,
                            adapt_initial_condition_only_refine = true)
 
-stepsize_callback = StepsizeCallback(cfl = 3.6)
+stepsize_callback = StepsizeCallback(cfl = 2.3)
 
 callbacks = CallbackSet(summary_callback,
                         analysis_callback, alive_callback,
-                        save_solution,
+                        # save_solution,
                         amr_callback, stepsize_callback)
 
 ###############################################################################
 # run the simulation
 
-sol = solve(ode, SSPRK54();
+# sol = Trixi.solve(ode, Trixi.SSP154_2Nstar();
+sol = solve(ode, SSPRK104();
             dt = stepsize_callback(ode), # solve needs some value here but it will be overwritten by the stepsize_callback
             ode_default_options()..., callback=callbacks);
 
-# println(analysis_callback(sol))
+println(analysis_callback(sol))
 # using Plots
 # plot(sol)
