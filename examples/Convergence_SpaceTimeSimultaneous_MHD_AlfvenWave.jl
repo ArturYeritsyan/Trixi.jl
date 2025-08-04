@@ -9,14 +9,14 @@ equations = IdealGlmMhdEquations2D(gamma)
 initial_condition = initial_condition_convergence_test
 
 volume_flux = (flux_central, flux_nonconservative_powell)
-solver = DGSEM(polydeg = 6,
+solver = DGSEM(polydeg = 4,
                surface_flux = (flux_lax_friedrichs, flux_nonconservative_powell),
                volume_integral = VolumeIntegralFluxDifferencing(volume_flux))
 
 coordinates_min = (0.0, 0.0)
 coordinates_max = (sqrt(2.0), sqrt(2.0))
 mesh = TreeMesh(coordinates_min, coordinates_max,
-                initial_refinement_level = 6,
+                initial_refinement_level = 2,
                 n_cells_max = 10_000)
 
 semi = SemidiscretizationHyperbolic(mesh, equations, initial_condition, solver)
@@ -45,7 +45,7 @@ save_solution = SaveSolutionCallback(interval = 10,
                                      save_final_solution = true,
                                      solution_variables = cons2prim)
 
-cfl = 1.0 / 2
+cfl = 3.0
 stepsize_callback = StepsizeCallback(cfl = cfl)
 
 glm_speed_callback = GlmSpeedCallback(glm_scale = 0.5, cfl = cfl)
@@ -60,7 +60,7 @@ callbacks = CallbackSet(summary_callback,
 ###############################################################################
 # run the simulation
 
-ode_algorithm = Trixi.SSP104_2Nstar()
+ode_algorithm = Trixi.SSP144_2Nstar()
 # ode_algorithm = Trixi.SSP53_2Nstar()
 # ode_algorithm = SSPRK22()
 sol = Trixi.solve(ode, ode_algorithm;
