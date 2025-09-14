@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# Note: L2-Error (not L1)
 
 import matplotlib.pyplot as plt
 import matplotlib
@@ -48,12 +49,12 @@ ax.plot(N, LInfErr_B1_SSP144, color = RWTH_Orange_RGB[0], linestyle='dashed')
 #          label = r'$\mathcal{O}\left(N^{-2}\right)$',
 #          color = 'black') # Order two line fitted
 
-#ax.loglog(N, np.multiply(8e-2, np.power(np.array(N, dtype=float), -3) ), linestyle='dashdot',
-#          label = r'$\mathcal{O}\left(N^{-3}\right)$',
-#          color = 'black') # Order two line fitted
+ax.loglog(N, np.multiply(8e-2, np.power(np.array(N, dtype=float), -4) ), linestyle='dashdot',
+          label = r'$\mathcal{O}\left(N^{-4}\right)$',
+          color = 'black') # Order two line fitted
 
-ax.loglog(N, np.multiply(2e-2, np.power(np.array(N, dtype=float), -4) ), linestyle='dashed',
-            label = r'$\mathcal{O}\left(N^{-4}\right)$',
+ax.loglog(N, np.multiply(6e-2, np.power(np.array(N, dtype=float), -5) ), linestyle='dotted',
+            label = r'$\mathcal{O}\left(N^{-5}\right)$',
             color = 'black') # Order two line fitted
 
 # Turn on logscale (no native support for logarithmic scatter)
@@ -90,7 +91,7 @@ for axis in ['top','bottom','left','right']:
 '''
 
 ### TITLE SECTION ###
-plt.title(r"$e^{L^\infty}_{B_x}$ (Alfven Wave)")
+plt.title(r"$L^\infty_{error}$ (Alfven Wave)")
 
 # Scale while preserving aspect ratio
 width, height = fig.get_size_inches()
@@ -98,5 +99,5 @@ factor = InchesX / width
 fig.set_size_inches(width * factor, height * factor)
 
 plt.tight_layout()  # Title, labels, ... to screen
-plt.savefig('Convergence_AW_LInf.pgf', bbox_inches = 'tight', pad_inches = 0)
+plt.savefig('LInf_error.png', dpi=500, bbox_inches = 'tight', pad_inches = 0)
 plt.show()

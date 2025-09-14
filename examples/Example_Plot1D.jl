@@ -168,7 +168,7 @@ semi = SemidiscretizationHyperbolicParabolic(mesh, (equations, equations_parabol
 #tspan = (0.0, 0.5)
 tspan = (0.0, 0.0) # For plotting of IC
 
-ode = semidiscretize(semi, tspan; split_problem = false)
+ode = semidiscretize(semi, tspan)
 
 summary_callback = SummaryCallback()
 

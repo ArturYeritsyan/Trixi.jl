@@ -98,7 +98,7 @@ stepsize_callback = StepsizeCallback(cfl = 4.2)
 
 callbacks = CallbackSet(summary_callback,
                         analysis_callback, alive_callback,
-                        # save_solution,
+                        save_solution,
                         amr_callback, stepsize_callback)
 
 ###############################################################################
@@ -112,3 +112,5 @@ sol = Trixi.solve(ode, Trixi.SSP154_2Nstar();
 println(analysis_callback(sol))
 # using Plots
 # plot(sol)
+# pd = PlotData2D(sol)
+# plot(pd["rho"], title = "\$ρ, t_f = 3.0\$", xlabel = "\$x\$", ylabel = "\$y \$", c = :jet)

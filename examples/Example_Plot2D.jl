@@ -77,8 +77,8 @@ callbacks = CallbackSet(summary_callback,
 
 ###############################################################################
 # run the simulation
-
-sol = Trixi.solve(ode, ode_algorithm,
+dt=1e-1
+sol = Trixi.solve(ode, Trixi.SSP104_2Nstar(),
                   dt = dt,
                   save_everystep=false, callback=callbacks);
 
