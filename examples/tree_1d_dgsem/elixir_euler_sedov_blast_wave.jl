@@ -44,7 +44,7 @@ initial_condition = initial_condition_sedov_blast_wave
 # `StepsizeCallback` (CFL-Condition) and less diffusion.
 surface_flux = FluxLaxFriedrichs(max_abs_speed_naive)
 volume_flux = flux_chandrashekar
-basis = LobattoLegendreBasis(5)
+basis = LobattoLegendreBasis(3)
 shock_indicator_variable = density_pressure
 indicator_sc = IndicatorHennemannGassner(equations, basis,
                                          alpha_max = 0.5,
@@ -97,7 +97,7 @@ amr_callback = AMRCallback(semi, amr_controller,
                            adapt_initial_condition = true,
                            adapt_initial_condition_only_refine = true)
 
-stepsize_callback = StepsizeCallback(cfl = 2.3)
+stepsize_callback = StepsizeCallback(cfl = 1.5)
 
 callbacks = CallbackSet(summary_callback,
                         analysis_callback, alive_callback,
@@ -107,11 +107,34 @@ callbacks = CallbackSet(summary_callback,
 ###############################################################################
 # run the simulation
 
-# sol = Trixi.solve(ode, Trixi.SSP154_2Nstar();
-sol = solve(ode, SSPRK104();
+sol = Trixi.solve(ode, Trixi.SSP144_2Nstar();
+# sol = solve(ode, SSPRK104();
             dt = stepsize_callback(ode), # solve needs some value here but it will be overwritten by the stepsize_callback
             ode_default_options()..., callback=callbacks);
 
 println(analysis_callback(sol))
-# using Plots
-# plot(sol)
+
+# Plots
+using Plots
+pd = PlotData1D(sol)
+
+plot(getmesh(pd), label = "", ylim = (-0.3, 1.4))
+
+plot!(pd["rho"], xlabel = "\$x\$",
+      label = "\$\\rho\$",
+      linewidth = 3, color = RGB(0, 84 / 256, 159 / 256),
+      guidefont = font("Computer Modern", 16), tickfont = font("Computer Modern", 14),
+      yticks = -0.2:0.4:1.4,
+      xtick = ([-2, -1, -0.5, 0, 0.5, 1, 2], ["-2", "-1", "-0.5", "0", "0.5", "1", "2"]),
+      legend = true)
+
+plot!(pd["v1"],
+      label = "\$v\$",
+      linewidth = 3, color = RGB(246 / 256, 169 / 256, 0), legend = true)
+
+plot!(pd["p"], title = "Euler Sedov Blast Wave",
+      label = "\$p\$",
+      linewidth = 3, color = RGB(70 / 256, 171 / 256, 39 / 256),
+      titlefont = font("Computer Modern", 18),
+      legendfont = font("Computer Modern", 16),
+      legend = :left)
