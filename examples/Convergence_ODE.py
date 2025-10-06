@@ -35,13 +35,13 @@ RWTH_Purple_RGB = [(97/256, 33/256, 88/256)]
 
 ### ACTUAL PLOTTING: Absolute errors ###
 
-ax.scatter(dts, Err_SSP64, label = r'2N$^*$(6,4)', color = RWTH_Blue_RGB)
+ax.scatter(dts, Err_SSP64, label = r'$2N^*(6,4)$', color = RWTH_Blue_RGB)
 ax.plot(dts, Err_SSP64, color = RWTH_Blue_RGB[0], linestyle='dashed')
 
-ax.scatter(dts, Err_SSP104, label = r'2N$^*$(10,4)', color = RWTH_Green_RGB)
+ax.scatter(dts, Err_SSP104, label = r'$2N^*(10,4)$', color = RWTH_Green_RGB)
 ax.plot(dts, Err_SSP104, color = RWTH_Green_RGB[0], linestyle='dashed')
 
-ax.scatter(dts, Err_SSP144, label = r'2N$^*$(14,4)', color = RWTH_Orange_RGB)
+ax.scatter(dts, Err_SSP144, label = r'$2N^*(14,4)$', color = RWTH_Orange_RGB)
 ax.plot(dts, Err_SSP144, color = RWTH_Orange_RGB[0], linestyle='dashed')
 
 ax.loglog(dts, np.multiply(8e-3, np.power(np.array(dts, dtype=float), 4) ), linestyle='dashdot',
@@ -95,5 +95,5 @@ factor = InchesX / width
 fig.set_size_inches(width * factor, height * factor)
 
 plt.tight_layout()  # Title, labels, ... to screen
-plt.savefig('error_ode.png', dpi=300, bbox_inches = 'tight', pad_inches = 0)
+plt.savefig('error_ode.pgf', dpi=300, bbox_inches = 'tight', pad_inches = 0)
 plt.show()

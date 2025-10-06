@@ -138,3 +138,5 @@ plot!(pd["p"], title = "Euler Sedov Blast Wave",
       titlefont = font("Computer Modern", 18),
       legendfont = font("Computer Modern", 16),
       legend = :left)
+
+savefig("examples/sedov_blast_wave.pdf")

@@ -24,15 +24,10 @@ fig, ax = plt.subplots()
 ax.set_xlabel("Re")
 ax.set_ylabel("Im")
 
-ax.grid(axis ='y', which='both', alpha=0.1, linewidth = 1.5, color ='black')
+ax.grid(axis ='both', which='both', alpha=0.1, linewidth = 1.5, color ='black')
 ax.set_axisbelow(True)  # Hide grid
-# Make zero line better visible
-gridlines = ax.yaxis.get_gridlines()
-gridlines[1].set_alpha(1)
-
-ax.grid(axis ='x', which='both', alpha=0.1, linewidth = 1.5, color ='black')
-gridlines = ax.xaxis.get_gridlines()
-gridlines[-1].set_alpha(1)
+ax.axvline(0, color='black', linewidth = 1.25, alpha=1, zorder=0)
+ax.axhline(0, color='black', linewidth = 1.5, alpha=1, zorder=0)
 #plt.show()
 
 N = 200
@@ -87,7 +82,7 @@ for j in range(0,len(gamma)):
   Z = abs(poly)
   plt.contourf(X, Y, Z, levels=[0,1], colors=colors[j])
   cs = plt.contour(X, Y, Z, levels=[0,1], linewidths = 0.5, colors="black")
-  plt.plot([1, 2], [1, 2], color = colors[j][0], label = "2N*("+str(Degree[j])+",4)")
+  plt.plot([1, 2], [1, 2], color = colors[j][0], label = r"$2N^*($"+str(Degree[j])+"$,4)$")
   
 #cs = plt.contour(X, Y, Z, [1.0], colors = RWTH_Orange_RGB, linewidths = 2)
 #plt.clabel(cs, inline=1, fontsize=10) # add labels to contours
@@ -96,7 +91,7 @@ for j in range(0,len(gamma)):
 #plt.plot([1, 2], [1, 2], color = RWTH_Orange_RGB[0], label = "Boundary of region of absolute stability")
 #plt.plot([1, 2], [1, 2], color = RWTH_Orange_RGB[0], label = "E = 20")
 
-plt.legend(loc = "lower left", bbox_to_anchor=(0.0, 0.075))
+plt.legend(loc = "lower left", bbox_to_anchor=(0.0, 0.005))
 
 ax.set_xlim(xmin, xmax)
 ax.set_ylim(ymin, ymax)
@@ -109,6 +104,6 @@ factor = InchesX / width
 fig.set_size_inches(width * factor, 1.2*height * factor)
 
 #plt.savefig('Boundary_StabilityRegion' + str(Degree) + '.pgf', bbox_inches = 'tight', pad_inches = 0)
-plt.savefig('Boundary_StabilityRegions.pgf', bbox_inches = 'tight')
+plt.savefig('domain_of_stability.pgf', bbox_inches = 'tight')
 
 plt.show()

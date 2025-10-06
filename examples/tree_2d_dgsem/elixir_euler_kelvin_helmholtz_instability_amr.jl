@@ -105,7 +105,7 @@ callbacks = CallbackSet(summary_callback,
 # run the simulation
 
 sol = Trixi.solve(ode, Trixi.SSP144_2Nstar();
-# sol = solve(ode, SSPRK54();
+# sol = solve(ode, SSPRK104();
             dt = 1.0, # solve needs some value here but it will be overwritten by the stepsize_callback
             ode_default_options()..., callback=callbacks);
 
