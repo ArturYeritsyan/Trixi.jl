@@ -86,15 +86,15 @@ amr_indicator = IndicatorHennemannGassner(semi,
                                           alpha_smooth = false,
                                           variable = Trixi.density)
 amr_controller = ControllerThreeLevel(semi, amr_indicator,
-                                      base_level = 4,
+                                      base_level = 0,
                                       med_level = 0, med_threshold = 0.0003, # med_level = current level
-                                      max_level = 6, max_threshold = 0.003)
+                                      max_level = 8, max_threshold = 0.001)
 amr_callback = AMRCallback(semi, amr_controller,
                            interval = 1,
                            adapt_initial_condition = true,
                            adapt_initial_condition_only_refine = true)
 
-stepsize_callback = StepsizeCallback(cfl = 4.1)
+stepsize_callback = StepsizeCallback(cfl = 2.5)
 
 callbacks = CallbackSet(summary_callback,
                         analysis_callback, alive_callback,

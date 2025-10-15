@@ -82,14 +82,14 @@ amr_indicator = IndicatorHennemannGassner(semi,
                                           alpha_smooth = false,
                                           variable = density_pressure)
 amr_controller = ControllerThreeLevel(semi, amr_indicator,
-                                      base_level = 4,
-                                      max_level = 6, max_threshold = 0.01)
+                                      base_level = 0,
+                                      max_level = 8, max_threshold = 0.08)
 amr_callback = AMRCallback(semi, amr_controller,
                            interval = 6,
                            adapt_initial_condition = true,
                            adapt_initial_condition_only_refine = true)
 
-cfl = 2.9
+cfl = 2.5
 stepsize_callback = StepsizeCallback(cfl = cfl)
 
 glm_speed_callback = GlmSpeedCallback(glm_scale = 0.5, cfl = cfl)
