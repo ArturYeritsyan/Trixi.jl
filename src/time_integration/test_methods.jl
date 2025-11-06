@@ -1,3 +1,5 @@
+### Finding the maximal stable CFL number for a chosen elixir ###
+
 # elixir = "../../examples/tree_1d_dgsem/elixir_euler_sedov_blast_wave.jl"  
 elixir = "../../examples/tree_1d_dgsem/elixir_mhd_torrilhon_shock_tube.jl"  
 # elixir = "../../examples/tree_2d_dgsem/elixir_euler_kelvin_helmholtz_instability_amr.jl"
